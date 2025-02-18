@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio - Showcasing My Projects and Skills</title>
+  <style>
+    /* Global styles to avoid overflow */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      color: rgba(173, 37, 27, 0.884);
+      overflow-x: hidden;
+    }
+    
+    .home-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-left: 50px;
+      background: url('images/cover-image.jpg') no-repeat center center/cover;
+      background-size: cover;
+      text-align: left;
+      overflow: hidden;  /* Prevent overflow */
+    }
+
+    .contact-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 85vh;
+      background: rgba(26, 26, 46, 0.8);
+      text-align: center;
+      overflow: hidden; /* Prevent overflow */
+    }
+
+    #bio {
+      background: url('images/about.jpg') no-repeat center center/cover;
+      background-size: cover;
+      overflow: hidden; /* Prevent overflow */
+      
+    }
+
+    h1 {
+      font-size: 48px;
+      margin: 0;
+    }
+    .typed-cursor {
+      font-size: 0em;
+    }
+
+    #auto-type {
+      font-size: 24px;
+      color: #00adb5;
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+      border-right: 3px solid #247a32;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: rgba(66, 62, 62, 0.9);
+      z-index: 1000;
+      transition: 0.3s ease;
+      padding-top: 80px;
+      overflow: hidden; /* Prevent overflow */
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 20px;
+    }
+
+    .sidebar ul li a {
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 22px;
+      display: block;
+      transition: 0.3s ease;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #4CAF50;
+      border-radius: 5px;
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 30px;
+      color: rgb(255, 51, 0);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+    }
+
+    .menu-btn:hover {
+      color: rgb(0, 24, 240);
+    }
+
+    /* Project carousel styles */
+    .project-carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+      height: auto; /* Increased height for better visibility */
+      position: relative;
+      padding: 0 20px; /* Prevents overflow at edges */
+      background: rgba(26, 26, 46, 0.8); /* Same background as contact section */
+    }
+
+    .project-slide {
+      min-width: 70%; /* Adjusted size for better fit */
+      max-width: 100%; /* Ensure it doesn't overflow */
+      height: auto;
+      scroll-snap-align: center;
+      text-align: left;
+      font-size: 20px; /* Adjusted font size for better readability */
+      font-weight: bold;
+      display: flex;
+      flex-direction: column; /* Changed to column for better layout */
+      justify-content: center;
+      align-items: center;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      color: rgb(44, 36, 36);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      margin: 10px; /* Add margin to separate slides */
+    }
+
+    .project-slide:hover {
+      transform: scale(1.05); /* Adjusted scale for better visibility */
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+
+    .project-slide img {
+      width: 100%; /* Adjusted size for better fit */
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .project-slide .overlay {
+      position: absolute; /* Change position to absolute */
+      bottom: 0; /* Align to the bottom of the slide */
+      width: 100%; /* Full width */
+      background: rgba(0, 0, 0, 0.7); /* Darker background for better contrast */
+      color: white;
+      text-align: center; /* Center the text */
+      padding: 10px 0; /* Adjust padding for better fit */
+      border-radius: 0 0 15px 15px;
+      font-size: 16px; /* Adjusted font size for better readability */
+      font-weight: bold;
+      overflow: hidden; /* Prevent overflow */
+      text-overflow: ellipsis; /* Add ellipsis for overflow text */
+      white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .social-links {
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      margin: 0 15px;
+      transition: color 0.3s;
+    }
+
+    .social-links a img {
+      width: 32px;
+      height: 32px;
+      margin: 0 10px;
+      transition: transform 0.3s;
+    }
+
+    .social-links a img:hover {
+      transform: scale(1.2);
+    }
+
+    /* Responsive styles for project carousel */
+    @media (max-width: 768px) {
+      .project-slide {
+        min-width: 100%; /* Full width on smaller screens */
+        height: auto; /* Adjust height for better fit */
+      }
+
+      .project-slide img {
+        width: 100%;
+        height: auto;
+      }
+
+      .project-slide p {
+        font-size: 18px; /* Smaller font size for better readability */
+      }
+    }
+
+    .name-line {
+      display: flex;
+      align-items: baseline;
+    }
+    .name-line .small-text {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+    .name-line .large-text {
+      font-size: 48px;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #333;
+      color: white;
+      font-size: 14px;
+      border-top: 2px solid #4CAF50;
+    }
+    .footer a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <button class="menu-btn" onclick="toggleSidebar()">&#9670</button>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#bio">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- Home Section with Auto-Type -->
+  <section id="home" class="home-section">
+    <div class="name-line">
+      <span  class="large-text"><strong>Jishnu</strong></span>. <!-- name your self -->
+    </div>
+    <h2 id="auto-type"></h2>
+  </section>
+
+  <!-- About Section -->
+  <section class="home-section" id="bio">
+    <h1>About Me</h1>
+    <p>I am an Applied Electronics and Instrumentation student passionate about IoT and embedded systems. I love creating innovative solutions by combining hardware and software.</p>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="project-carousel">
+    <!-- Project 001 -->
+    <div class="project-slide" onclick="openProject('projects/Drowsiness Detection System/drowsiness.html')">
+      <img src="projects/Drowsiness Detection System/Cover drowsy.jpg" alt="Drowsiness Detection System" loading="lazy">
+      <div class="overlay">Drowsiness Detection System</div>
+    </div>
+ <!-- Project 002 -->
+    <div class="project-slide" onclick="openProject('projects\IOT Weather\iot-weather.html')">
+      <img src="projects\IOT Weather\iot-weather-station-image.jpg" alt="IoT Weather Station" loading="lazy">
+      <div class="overlay">IoT Weather Station</div>
+    </div>
+<!-- Project 003 -->
+    <div class="project-slide" onclick="openProject('projects\Smart Home Automation\smart-home-automation.html')">
+      <img src="projects\Smart home\smart-home-automation.jpg" alt="Smart Home Automation" loading="lazy">
+      <div class="overlay">Smart Home Automation</div>
+    </div>
+<!-- Project 004 -->
+    <div class="project-slide" onclick="openProject('projects\ML Classifier\ml-classifier.html')">
+      <img src=" projects\Mechaine learning\machine-learning-classifier-image.jpg" alt="Machine Learning Classifier" loading="lazy">
+      <div class="overlay">Machine Learning Classifier</div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <h2>Contact</h2>
+    <!-- Adjust the width and height to lower the scale of the profile picture -->
+    <img src="C:\Users\jk\Desktop\Website\images\profile-pic.jpg" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 20px;">
+    <p>Email: <a href="mailto:jishnukolarkunnath@gmail.com">jishnukolarkunnath@gmail.com</a></p>
+    <div class="social-links">
+      <a href="https://github.com/Jishnukolarkunnath" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub">
+      </a>
+       <!--
+
+
+      <a href="https://www.linkedin.com/in/yourprofile" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn">
+      </a>
+
+
+      -->
+
+       <!--
+
+
+
+      <a href="https://twitter.com/yourprofile" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+      </a>
+
+
+
+      -->
+      <a href="https://www.instagram.com/j_shnu" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram">
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2023 Jishnu Kolar. All rights reserved. 
+    <br>
+    <a href="https://github.com/Jishnukolarkunnath" target="_blank">GitHub</a> |
+    <!--
+    <a href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a> |
+     -->
+    <a href="mailto:jishnukolarkunnath@gmail.com">Email</a>
+  </footer>
+
+  <!-- Auto-Type Script -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Initialize Typed.js for auto-typing effect
+      new Typed('#auto-type', {
+        strings: ["am a Web Developer", "am a Project Maker", "am an IoT Enthusiast", "am an Embedded Systems Developer"],
+        typeSpeed: 50,
+        backSpeed: 25,
+        backDelay: 2000,
+        loop: true
+      });
+
+      let autoHideTimeout;
+      function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.style.left === '0px') {
+          sidebar.style.left = '-250px';
+        } else {
+          sidebar.style.left = '0px';
+          clearTimeout(autoHideTimeout);
+          autoHideTimeout = setTimeout(() => {
+            sidebar.style.left = '-250px';
+          }, 2600);
+        }
+      }
+
+      const carousel = document.querySelector('.project-carousel');
+      let currentIndex = 0;
+
+      function scrollToProject(index) {
+        const slides = document.querySelectorAll('.project-slide');
+        const slideWidth = slides[0].offsetWidth;
+        carousel.scrollTo({
+          left: index * slideWidth,
+          behavior: 'smooth'
+        });
+      }
+
+      function autoScrollProjects() {
+        const slides = document.querySelectorAll('.project-slide');
+        currentIndex = (currentIndex + 1) % slides.length;
+        scrollToProject(currentIndex);
+      }
+
+      // Auto-scroll every 3 seconds
+      setInterval(autoScrollProjects, 3000);
+
+      function openProject(projectFile) {
+        if (projectFile) {
+          window.location.href = projectFile;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
